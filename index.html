@@ -1,0 +1,459 @@
+```html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="乔迁之喜电子请柬 · 2026年9月27日 利蔓肥东和睦湖店">
+<title>乔迁之喜 · 电子请柬</title>
+<style>
+  :root{
+    --gold:#d4af37;
+    --gold-light:#ffe9a8;
+    --gold-deep:#b8912b;
+    --red:#8b1a1a;
+    --red-bright:#b22222;
+    --ink:#4a2c1a;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{height:100%;}
+  body{
+    margin:0;
+    font-family:"PingFang SC","Microsoft YaHei","STSong",serif;
+    background:radial-gradient(circle at 50% 0%,#8e1414 0%,#5e0a0c 55%,#3d0507 100%);
+    background-attachment:fixed;
+    color:var(--ink);
+    display:flex;
+    justify-content:center;
+    padding:20px 12px 34px;
+    min-height:100%;
+  }
+
+  /* ========== 封面 ========== */
+  .cover{
+    position:fixed;
+    inset:0;
+    z-index:100;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:radial-gradient(circle at 50% 32%,#a8140f 0%,#6e0b0e 58%,#410406 100%);
+    overflow:hidden;
+    transition:opacity .85s ease,transform .85s ease;
+  }
+  .cover.hide{opacity:0;transform:scale(1.06);pointer-events:none;}
+
+  .cover-inner{
+    position:relative;
+    z-index:3;
+    text-align:center;
+    padding:30px;
+  }
+  .seal{
+    width:96px;height:96px;
+    margin:0 auto 28px;
+    border:2px solid var(--gold);
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:26px;font-weight:700;letter-spacing:2px;
+    color:var(--gold-light);
+    text-indent:2px;
+    animation:sealPulse 3s ease-in-out infinite;
+  }
+  .cover h1{
+    font-size:clamp(36px,12vw,46px);
+    letter-spacing:12px;
+    text-indent:12px;
+    color:var(--gold-light);
+    margin:0 0 16px;
+    font-weight:700;
+    text-shadow:0 2px 16px rgba(255,180,80,.55);
+  }
+  .cover p{
+    margin:0 0 52px;
+    font-size:14px;
+    letter-spacing:6px;
+    text-indent:6px;
+    color:#e8c67a;
+  }
+  .open-btn{
+    display:inline-block;
+    padding:13px 42px;
+    border:1px solid var(--gold);
+    border-radius:999px;
+    font-size:15px;
+    letter-spacing:4px;
+    text-indent:4px;
+    color:var(--gold-light);
+    background:rgba(212,175,55,.10);
+    cursor:pointer;
+    user-select:none;
+    animation:glow 2.4s ease-in-out infinite;
+  }
+  .open-btn:active{background:rgba(212,175,55,.25);}
+
+  /* 灯笼 */
+  .lantern{
+    position:absolute;
+    top:-8px;
+    width:44px;
+    transform-origin:top center;
+    animation:swing 3.8s ease-in-out infinite;
+    z-index:2;
+  }
+  .lantern.left{left:26px;}
+  .lantern.right{right:26px;animation-delay:-1.9s;}
+  .lantern .rope{
+    display:block;width:2px;height:64px;margin:0 auto;
+    background:linear-gradient(180deg,rgba(212,175,55,.15),var(--gold));
+  }
+  .lantern .body{
+    display:block;width:44px;height:54px;
+    border-radius:50% / 42%;
+    background:radial-gradient(circle at 50% 36%,#f0563a,#b31913 72%);
+    box-shadow:0 0 24px rgba(255,120,60,.55),inset 0 0 14px rgba(255,210,120,.45);
+    position:relative;
+  }
+  .lantern .body::before,
+  .lantern .body::after{
+    content:"";position:absolute;left:50%;transform:translateX(-50%);
+    width:20px;height:6px;border-radius:3px;
+    background:linear-gradient(180deg,#f6d97a,#c39a2a);
+  }
+  .lantern .body::before{top:-4px;}
+  .lantern .body::after{bottom:-4px;}
+  .lantern .tassel{
+    display:block;width:3px;height:26px;margin:0 auto;
+    background:linear-gradient(180deg,#f6d97a,rgba(212,175,55,0));
+    border-radius:2px;
+  }
+
+  /* ========== 金屑飘落 ========== */
+  #sparkles{position:fixed;inset:0;pointer-events:none;z-index:200;overflow:hidden;}
+  .sparkle{
+    position:absolute;top:-12px;width:4px;height:4px;border-radius:50%;
+    background:radial-gradient(circle,#ffe9a8 0%,rgba(212,175,55,0) 72%);
+    animation:fall linear infinite;
+  }
+
+  /* ========== 请柬主体 ========== */
+  .card{
+    position:relative;
+    width:100%;
+    max-width:420px;
+    background:linear-gradient(180deg,#fffaf0 0%,#fff4dc 100%);
+    border:1px solid var(--gold);
+    border-radius:18px;
+    box-shadow:0 12px 38px rgba(0,0,0,.32);
+    overflow:hidden;
+    opacity:0;
+    transform:translateY(26px);
+    transition:opacity .8s ease,transform .8s ease;
+  }
+  .card.show{opacity:1;transform:translateY(0);}
+
+  .top{
+    position:relative;
+    background:linear-gradient(135deg,#8b1a1a,#b22222);
+    color:var(--gold-light);
+    text-align:center;
+    padding:34px 20px 28px;
+    overflow:hidden;
+  }
+  .top::before{
+    content:"";
+    position:absolute;inset:8px;
+    border:1px solid rgba(212,175,55,.35);
+    border-radius:10px;
+    pointer-events:none;
+  }
+  .top::after{
+    content:"";
+    position:absolute;left:18px;right:18px;bottom:12px;height:1px;
+    background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  }
+  .title{
+    font-size:clamp(32px,11vw,42px);
+    letter-spacing:8px;
+    text-indent:8px;
+    font-weight:700;
+    margin:0;
+    text-shadow:0 2px 10px rgba(0,0,0,.25);
+  }
+  .subtitle{
+    margin-top:12px;
+    font-size:15px;
+    letter-spacing:4px;
+    text-indent:4px;
+    color:#ffdf8c;
+  }
+
+  .content{padding:26px 24px 30px;}
+
+  .greeting{
+    font-size:16.5px;
+    line-height:1.95;
+    text-align:justify;
+    margin:0 0 4px;
+  }
+
+  .section{
+    border-top:1px solid #e8d5a8;
+    padding-top:18px;
+    margin-top:20px;
+  }
+  .section-title{
+    color:var(--red);
+    font-size:16px;
+    font-weight:700;
+    letter-spacing:3px;
+    text-indent:3px;
+    margin-bottom:14px;
+    text-align:center;
+    position:relative;
+  }
+  .section-title::before,
+  .section-title::after{
+    content:"";
+    position:absolute;top:50%;width:34px;height:1px;
+    background:linear-gradient(90deg,transparent,var(--gold));
+  }
+  .section-title::before{left:14%;}
+  .section-title::after{right:14%;transform:scaleX(-1);}
+
+  .info-row{
+    display:flex;
+    margin:10px 0;
+    font-size:15px;
+    line-height:1.7;
+  }
+  .label{
+    color:var(--red);
+    font-weight:600;
+    min-width:76px;
+    flex-shrink:0;
+  }
+  .value{color:var(--ink);flex:1;}
+
+  .notice{
+    background:#fff8e6;
+    border-left:4px solid var(--gold);
+    padding:12px 14px;
+    border-radius:8px;
+    font-size:14px;
+    line-height:1.8;
+    margin-top:14px;
+  }
+
+  .actions{display:flex;gap:10px;margin-top:14px;}
+  .btn{
+    flex:1;
+    text-align:center;
+    padding:12px 0;
+    border-radius:10px;
+    font-size:14px;
+    letter-spacing:1.5px;
+    text-decoration:none;
+    background:linear-gradient(135deg,#8b1a1a,#b22222);
+    color:var(--gold-light);
+    box-shadow:0 4px 12px rgba(139,26,26,.25);
+    transition:transform .15s ease,opacity .2s;
+  }
+  .btn.ghost{
+    background:#fff8e6;
+    color:var(--red);
+    border:1px solid var(--gold);
+    box-shadow:none;
+  }
+  .btn:active{transform:scale(.97);opacity:.9;}
+
+  .reply{
+    text-align:center;
+    font-size:15px;
+    line-height:1.95;
+    margin-top:22px;
+    color:#6b4a2b;
+  }
+  .reply strong{color:var(--red);font-weight:700;}
+
+  .footer{
+    text-align:center;
+    padding:20px 20px 26px;
+    border-top:1px solid #e8d5a8;
+    margin-top:22px;
+  }
+  .footer small{
+    display:block;
+    color:#9a7b4f;
+    letter-spacing:3px;
+    text-indent:3px;
+    margin-bottom:8px;
+    font-size:12px;
+  }
+  .inviter{
+    font-size:18px;
+    color:var(--red);
+    font-weight:700;
+    letter-spacing:2px;
+  }
+
+  /* ========== 入场逐条动画 ========== */
+  .card.show .reveal{
+    animation:rise .75s cubic-bezier(.22,.68,.36,1) both;
+    animation-delay:var(--d,0s);
+  }
+
+  /* ========== 关键帧 ========== */
+  @keyframes rise{
+    from{opacity:0;transform:translateY(18px);}
+    to{opacity:1;transform:translateY(0);}
+  }
+  @keyframes sealPulse{
+    0%,100%{box-shadow:0 0 0 6px rgba(212,175,55,.12),inset 0 0 26px rgba(212,175,55,.35);}
+    50%{box-shadow:0 0 0 14px rgba(212,175,55,.05),inset 0 0 40px rgba(212,175,55,.55);}
+  }
+  @keyframes glow{
+    0%,100%{box-shadow:0 0 0 0 rgba(212,175,55,.45);}
+    50%{box-shadow:0 0 0 14px rgba(212,175,55,0);}
+  }
+  @keyframes swing{
+    0%,100%{transform:rotate(-4deg);}
+    50%{transform:rotate(4deg);}
+  }
+  @keyframes fall{
+    to{transform:translateY(112vh) rotate(360deg);}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .lantern,.open-btn,.seal,.sparkle{animation:none!important;}
+    .card{transition:none;}
+    .card.show .reveal{animation:none;opacity:1;}
+  }
+</style>
+</head>
+<body>
+
+  <!-- 飘落金屑 -->
+  <div id="sparkles" aria-hidden="true"></div>
+
+  <!-- ========== 封面 ========== -->
+  <div class="cover" id="cover">
+    <div class="lantern left" aria-hidden="true">
+      <span class="rope"></span><span class="body"></span><span class="tassel"></span>
+    </div>
+    <div class="lantern right" aria-hidden="true">
+      <span class="rope"></span><span class="body"></span><span class="tassel"></span>
+    </div>
+
+    <div class="cover-inner">
+      <div class="seal">乔迁</div>
+      <h1>乔迁之喜</h1>
+      <p>喜迁新居 · 恭候光临</p >
+      <div class="open-btn" id="openBtn" role="button" tabindex="0">开 启 请 柬</div>
+    </div>
+  </div>
+
+  <!-- ========== 请柬主体 ========== -->
+  <main class="card" id="card">
+    <div class="top">
+      <h2 class="title">乔迁之喜</h2>
+      <div class="subtitle">喜迁新居 · 恭候光临</div>
+    </div>
+
+    <div class="content">
+      <p class="greeting reveal" style="--d:.10s">
+        尊敬的贵宾：您好！<br>
+        承蒙您一直以来的关心与厚爱，我们已喜迁新居。谨定于 2026 年 9 月 27 日（星期日）午餐，在合肥地标美食餐饮品牌——利蔓肥东和睦湖店设乔迁宴，略备薄酌，诚邀您携家人拨冗光临，共叙情谊，同享喜悦。
+      </p >
+
+      <div class="section">
+        <div class="section-title reveal" style="--d:.22s">宴 席 信 息</div>
+
+        <div class="info-row reveal" style="--d:.32s">
+          <span class="label">就餐时间</span>
+          <span class="value">2026 年 9 月 27 日（星期日）午餐</span>
+        </div>
+        <div class="info-row reveal" style="--d:.42s">
+          <span class="label">就餐席位</span>
+          <span class="value">四楼 999 包厢</span>
+        </div>
+        <div class="info-row reveal" style="--d:.52s">
+          <span class="label">酒店品牌</span>
+          <span class="value">合肥地标美食餐饮品牌——利蔓肥东和睦湖店</span>
+        </div>
+        <div class="info-row reveal" style="--d:.62s">
+          <span class="label">酒店地址</span>
+          <span class="value">合肥市肥东县山水路与四顶山路交口和睦湖广场</span>
+        </div>
+
+        <div class="notice reveal" style="--d:.72s">
+          温馨提示：地铁 2 号线和睦湖站 A 出口向北 300 米，酒店提供免费停车。
+        </div>
+
+        <div class="actions reveal" style="--d:.82s">
+          <!-- 联系电话：15755135660 -->
+          <a class="btn" href=" ">拨打电话</a >
+          <a class="btn ghost"
+             href="https://uri.amap.com/search?keyword=%E5%88%A9%E8%94%93%E8%82%A5%E4%B8%9C%E5%92%8C%E7%9D%A6%E6%B9%96%E5%BA%97"
+             target="_blank" rel="noopener">一键导航</a >
+        </div>
+      </div>
+
+      <div class="reply reveal" style="--d:.94s">
+        如蒙应允，请于 <strong>9 月 25 日</strong> 前回复出席人数，<br>
+        以便提前安排席位。<br>
+        届时恭候光临！
+      </div>
+
+      <div class="footer reveal" style="--d:1.06s">
+        <small>邀 请 人</small>
+        <div class="inviter">梁英东、李玉玲</div>
+      </div>
+    </div>
+  </main>
+
+<script>
+  (function () {
+    var cover  = document.getElementById('cover');
+    var card   = document.getElementById('card');
+    var openBtn = document.getElementById('openBtn');
+
+    function openInvitation() {
+      if (cover.classList.contains('hide')) return;
+      cover.classList.add('hide');
+      card.classList.add('show');
+      // 动画结束后彻底移除封面，避免遮挡
+      setTimeout(function () {
+        cover.style.display = 'none';
+      }, 900);
+    }
+
+    openBtn.addEventListener('click', openInvitation);
+    openBtn.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openInvitation();
+      }
+    });
+
+    // 生成飘落金屑
+    var box = document.getElementById('sparkles');
+    var count = window.innerWidth < 480 ? 18 : 28;
+    var frag = document.createDocumentFragment();
+    for (var i = 0; i < count; i++) {
+      var s = document.createElement('i');
+      s.className = 'sparkle';
+      s.style.left = (Math.random() * 100) + '%';
+      s.style.animationDelay = (Math.random() * 9) + 's';
+      s.style.animationDuration = (7 + Math.random() * 7) + 's';
+      s.style.opacity = (0.25 + Math.random() * 0.5).toFixed(2);
+      var size = 3 + Math.random() * 3;
+      s.style.width = size + 'px';
+      s.style.height = size + 'px';
+      frag.appendChild(s);
+    }
+    box.appendChild(frag);
+  })();
+</script>
+</body>
+</html>
+```
